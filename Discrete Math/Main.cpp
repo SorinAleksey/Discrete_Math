@@ -6,9 +6,11 @@ using namespace std;
 int main() {
 	setlocale(LC_ALL, "ru");
 	cout << "Discrete Math" << endl;
-	NN* a = readNN();
+	NN* a = readNN(), * b = readNN();
 	printNN(a);
-	printNN(MUL_Nk_N(a, 20));
+	printNN(b);
+	printNN(SUB_NDN_N(a, b, '2'));
+	//printNN(SUB_NN_N(a, b));
 
 	return 0;
 }
