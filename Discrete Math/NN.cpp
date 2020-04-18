@@ -200,8 +200,11 @@ NN* ADD_NN_N(NN* n, NN* m) {
 NN* SUB_NN_N(NN* n, NN* m) {
 	NN* res = new NN();
 	if (COM_NN_D(n, m) == 0) return res;
+	if (COM_NN_D(n, m) == 1) return nullptr;
 
 	res->a.erase(res->a.begin());
+
+	/*
 	bool swap = false;
 	if (COM_NN_D(n, m) == 1) {
 		NN* temp = n;
@@ -209,32 +212,38 @@ NN* SUB_NN_N(NN* n, NN* m) {
 		m = temp;
 		swap = true;
 	}
+	*/
 
 	for (int i = 0; i < n->n; ++i) {
 		//если существуют разряды вычитаемого
 		if (m->n > i) {
 			//если существуют разряды в ответе
 			if (res->n > i) {
-				//если значение разряд уменьшаемого больше значения разряда вычитаемого
-				if (n->a[i] > m->a[i]) {
-					res->a[i] += n->a[i] - m->a[i] + '0';
+				//если значение разряд уменьшаемого больше или равно значения разряда вычитаемого
+				if (n->a[i] + (n->a[i] == '0' ? 10 : 0) + res->a[i] >= m->a[i]) {
+					//res->a[i] += n->a[i] - m->a[i] + '0';
+					res->a[i] += n->a[i] + '9' + 1 - m->a[i];
+					if (res->a[i] > '9') res->a[i] -= 10;
 				}
-				//если значение разряд уменьшаемого меньше или равно значения разряда вычитаемого
+				//если значение разряд уменьшаемого меньше значению разряда вычитаемого
 				else {
 					res->a[i] += n->a[i] + 10 - m->a[i] + '0';
+					//if (res->a[i] > '0') res->a[i] -= 10;
 					//занимаем
-					int ind = i;
-					do {
-						//если существуют разряды в ответе
-						if (res->n - 1 > ind) {
-							--res->a[i];
-						}
-						//если в ответе нет разрядов
-						else {
-							++res->n;
-							res->a.push_back(-1);
-						}
-					} while (n->a[++ind] == '0');
+					int ind = i + 1;
+					if (n->n  > ind) {
+						do {
+							//если существуют разряды в ответе
+							if (res->n > ind) {
+								--res->a[ind];
+							}
+							//если в ответе нет разрядов
+							else {
+								++res->n;
+								res->a.push_back(-1);
+							}
+						} while (n->n - 1 > ind && n->a[++ind] == '0');
+					}
 				}
 			}
 			//если разрядов в ответе нет
@@ -262,8 +271,9 @@ NN* SUB_NN_N(NN* n, NN* m) {
 			//если существуют разряды в ответе
 			if (res->n > i) {
 				//res->a[i] = '9' + 1 + res->a[i] + n->a[i] -'0';
+				//res->a[i] += n->a[i];
 				res->a[i] += n->a[i];
-				if (res->a[i] == '9' + 1) res->a[i] = '0';
+				if (res->a[i] < '0') res->a[i] += 10;
 			}
 			//если разрядов в ответе не существует
 			else {
@@ -279,11 +289,13 @@ NN* SUB_NN_N(NN* n, NN* m) {
 		res->a.erase(res->a.end() - 1);
 	}
 
+	/*
 	if (swap) {
 		NN* temp = n;
 		n = m;
 		m = temp;
 	}
+	*/
 
 	return res;
 }
@@ -410,7 +422,7 @@ NN* SUB_NDN_N(NN* n, NN* m, const char& k) {
 
 //N-10 автор: Валерия Веревина
 /*
-	Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,
+	вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,
 	где k - номер позиции этой цифры (номер считается с нуля)
 	используеме функции:
 		MUL_Nk_N - умножение натурального числа на 10^k
@@ -422,6 +434,8 @@ NN* SUB_NDN_N(NN* n, NN* m, const char& k) {
 NN* DIV_NN_Dk(NN* n, NN* m, const unsigned int& k) {
 	NN* res = new NN();
 	++res->n;
+
+	/*
 	bool swap = false;
 	if (COM_NN_D(n, m) == 1) {
 		swap = true;
@@ -429,12 +443,16 @@ NN* DIV_NN_Dk(NN* n, NN* m, const unsigned int& k) {
 		n = m;
 		m = temp;
 	}
+	*/
 
 	//алгоритма нахождения первой цифры от деления
 	bool ud = true;
 	for (int i = 1; i < m->n + 1; ++i)
 		if (n->a[n->n - i] < m->a[m->n - i]) {
 			ud = false;
+			break;
+		}
+		else if (n->a[n->n - i] > m->a[m->n - i]) {
 			break;
 		}
 
@@ -462,14 +480,150 @@ NN* DIV_NN_Dk(NN* n, NN* m, const unsigned int& k) {
 		temp = temp2;
 	} while (COM_NN_D(temp, m) != 1);
 
+	/*
 	if (swap) {
 		NN* temp = n;
 		n = m;
 		m = temp;
 	}
+	*/
 
 	temp = MUL_Nk_N(res, k);
 	delNN(res);
 	res = temp;
+	return res;
+}
+
+//N-11 автор: Данченкова Анастасия
+/*
+	частное от деления большего натурального числа на меньшее или равное 
+	натуральное с остатком(делитель отличен от нуля)
+	используеме функции:
+		DIV_NN_Dk - вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k
+		SUB_NDN_N - вычитание из натурального другого натурального, умноженного на цифру
+		MUL_Nk_N - умножение натурального числа на 10^k
+
+	принимает на вход 2 натуральных  числа
+*/
+NN* DIV_NN_N(NN* n, NN* m) {
+	if (m->n == 0) return nullptr;
+	//temp - копия n
+	NN* res = new NN(), * temp = new NN();
+	temp->a.erase(temp->a.cbegin());
+	temp->n = n->n;
+	for (int i = 0; i < n->n; ++i)
+		temp->a.push_back(n->a[i]);
+	
+	bool ud = true;
+	for (int i = 1; i < m->n + 1; ++i)
+		if (n->a[n->n - i] < m->a[m->n - i]) {
+			ud = false;
+			break;
+		}
+		else if (n->a[n->n - i] > m->a[m->n - i]) break;
+
+	//алгоритм нахождения деления
+	int ind = n->n - m->n - (ud ? 0 : 1);
+	while (COM_NN_D(temp, m) != 1) {
+		//нахождение первой цифры от деления домноженной на необхлдимый индекс
+		NN* temp2 = DIV_NN_Dk(temp, m, ind);
+		//внесение степени в ответ
+		NN* temp3 = ADD_NN_N(res, temp2);
+		delNN(res);
+		res = temp3;
+		//уменьшение temp
+		delNN(temp2);
+		//умножение натурального числа на 10^k
+		temp2 = MUL_Nk_N(m, ind);
+		//умножение натурального числа на цифру и вычитание из temp
+		temp3 = SUB_NDN_N(temp, temp2, res->a[ind]);
+		delNN(temp2);
+		delNN(temp);
+		temp = temp3;
+		--ind;
+	}
+
+	return res;
+}
+
+//N-12 автор: Юлия Веселкова
+/*
+	остаток от деления большего натурального числа на меньшее или равное натуральное с
+	остатком(делитель отличен от нуля)
+	используемые функции:
+		DIV_NN_N - частное от деления большего натурального числа на меньшее или равное
+		SUB_NN_N - вычитание из первого большего натурального числа второго меньшего или равного
+		MUL_NN_N - умножение натуральных чисел
+
+	принимает на вход 2 натуральных числа:
+		n - делимое
+		m - делитель
+*/
+NN* MOD_NN_N(NN* n, NN* m) {
+	//целая часть от деления 
+	NN* temp = DIV_NN_N(n, m);
+	//целая часть от деления * делитель
+	NN* temp2 = MUL_NN_N(temp, m);
+	delNN(temp);
+	NN* res = SUB_NN_N(n, temp2);
+	delNN(temp2);
+	return res;
+}
+
+//N-13 автор: Валерия Веревина
+/*
+	НОД натуральных чисел
+	используемые функции:
+		MOD_NN_N - остаток от деления большего натурального числа на меньшее
+		COM_NN_D - сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе
+		NZER_N_B - Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
+
+	принимает на вход 2 натуральных числа
+*/
+NN* GCF_NN_N(NN* n, NN* m) {
+	NN* copN = new NN(), * copM = new NN();
+	copN->a.erase(copN->a.cbegin());
+	copM->a.erase(copM->a.cbegin());
+	copN->n = n->n;
+	copM->n = m->n;
+	for (int i = 0; i < n->n; ++i) copN->a.push_back(n->a[i]);
+	for (int i = 0; i < m->n; ++i) copM->a.push_back(m->a[i]);
+
+	//алгоритм Евклида 
+	while (copN->n > 0 && copM->n > 0) {
+		if (COM_NN_D(copN, copM) == 2) {
+			NN* temp = MOD_NN_N(copN, copM);
+			delNN(copN);
+			copN = temp;
+		}
+		else {
+			NN* temp = MOD_NN_N(copM, copN);
+			delNN(copM);
+			copM = temp;
+		}
+	}
+
+	NN* res = ADD_NN_N(copN, copM);
+	delNN(copN);
+	delNN(copM);
+	return res;
+}
+
+//N-14 автор: Юлия Веселкова
+/*
+	НОК натуральных чисел
+	используемые функции:
+		GCF_NN_N - НОД натуральных чисел
+		MUL_NN_N - умножение натуральных чисел
+
+	принимаетна вход 2 натуральных числа
+*/
+NN* LCM_NN_N(NN* n, NN* m) {
+	//НОК (а, b) считается по формуле: (a,b)=a*b / НОД (а, b)
+	NN* temp = MUL_NN_N(n, m);
+	NN* temp2 = GCF_NN_N(n, m);
+	NN* res = DIV_NN_N(temp, temp2);
+	delNN(temp);
+	delNN(temp2);
 	return res;
 }
