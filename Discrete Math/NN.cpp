@@ -3,12 +3,11 @@
 #include <conio.h>
 using namespace std;
 
-constexpr unsigned char Enter = 13, Backspace = 8, Esc = 27, Delete = 83, Up = 72, Down = 80, Left = 75, Right = 77;
-char ch;
+constexpr unsigned char Enter = 13, Backspace = 8, Esc = 27;
 
 /*
 	структура данных
-	n - номер младшей позиции позиции
+	n - номер младшей позиции
 	a - массив символов с чилом
 */
 struct NN {
@@ -23,6 +22,7 @@ struct NN {
 	возврщает прочитанное натуральное число
 */
 NN* readNN() {
+	char ch;
 	NN* num = new NN();
 	do {
 		cout << "Ваше число: ";

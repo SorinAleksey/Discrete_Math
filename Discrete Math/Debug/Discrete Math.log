@@ -1,8 +1,2 @@
 ﻿  Main.cpp
-  NN.cpp
-C:\Users\Dlamo\OneDrive\Documents\Учеба\Дискретная математика\Discrete Math\Discrete Math\NN.cpp(119,20): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Dlamo\OneDrive\Documents\Учеба\Дискретная математика\Discrete Math\Discrete Math\NN.cpp(126,10): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Dlamo\OneDrive\Documents\Учеба\Дискретная математика\Discrete Math\Discrete Math\NN.cpp(361,20): warning C4018: <: несоответствие типов со знаком и без знака
-  Создание кода...
-C:\Users\Dlamo\OneDrive\Documents\Учеба\Дискретная математика\Discrete Math\Discrete Math\NN.cpp(82): warning C4715: delNN: значение возвращается не при всех путях выполнения
   Discrete Math.vcxproj -> C:\Users\Dlamo\OneDrive\Documents\Учеба\Дискретная математика\Discrete Math\Debug\Discrete Math.exe
