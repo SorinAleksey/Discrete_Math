@@ -1,3 +1,4 @@
+#include "NN.h"
 #include <iostream>
 #include <vector>
 #include <conio.h>
@@ -76,9 +77,9 @@ NN* delNN(NN* n) {
 	if (n != nullptr) {
 		n->a.clear();
 		delete n;
-		return nullptr;
 	}
 	else cout << "Числа не существует." << endl;
+	return nullptr;
 }
 
 //N-1 автор: Валерия Веревина
