@@ -1,6 +1,7 @@
 #include <iostream>
 #include "NN.h"
 #include "Z.h"
+#include "Q.h"
 using namespace std;
 
 int main() {

@@ -108,8 +108,8 @@ Z* delZ(Z* n) {
 NN* ABS_Z_N(Z* n) {
 	NN* res = new NN();
 	if (n->n == 0) return res;
-	res->a.erase(res->a.cbegin());
 	res->n = n->n;
+	res->a.clear();
 	for (int i = 0; i < n->n; ++i) res->a.push_back(n->a[i]);
 	return res;
 }
@@ -150,8 +150,8 @@ Z* MUL_ZM_Z(Z* n) {
 Z* TRANS_N_Z(NN* n) {
 	Z* res = new Z();
 	if (n->n == 0) return res;
-	res->a.erase(res->a.cbegin());
 	res->n = n->n;
+	res->a.clear();
 	for (int i = 0; i < n->n; ++i) res->a.push_back(n->a[i]);
 	return res;
 }
@@ -163,15 +163,13 @@ Z* TRANS_N_Z(NN* n) {
 	получает на вход целое число и возвращает натуральное
 */
 NN* TRANS_Z_N(Z* n) {
-	if (n->sign) {
-		NN* res = new NN();
-		if (n->n == 0) return res;
-		res->a.erase(res->a.cbegin());
-		res->n = n->n;
-		for (int i = 0; i < n->n; ++i) res->a.push_back(n->a[i]);
-		return res;
-	}
-	else return nullptr;
+	if (!n->sign) return nullptr;
+	NN* res = new NN();
+	if (n->n == 0) return res;
+	res->n = n->n;
+	res->a.clear();
+	for (int i = 0; i < n->n; ++i) res->a.push_back(n->a[i]);
+	return res;
 }
 
 //Z-6 автор: Цой Алина

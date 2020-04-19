@@ -140,10 +140,12 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NN.cpp" />
+    <ClCompile Include="Q.cpp" />
     <ClCompile Include="Z.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NN.h" />
+    <ClInclude Include="Q.h" />
     <ClInclude Include="Z.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
