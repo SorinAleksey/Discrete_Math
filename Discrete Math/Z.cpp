@@ -349,7 +349,7 @@ Z* DIV_ZZ_Z(Z* n, Z* m) {
 	NN* nNN = ABS_Z_N(n), * mNN = ABS_Z_N(m), * resNN;
 	resNN = DIV_NN_N(nNN, mNN);
 	Z* res = TRANS_N_Z(resNN);
-	res->sign = ((POZ_Z_D(n) != 1 && POZ_Z_D(m) != 1) || (POZ_Z_D(n) == 1 && POZ_Z_D(m) == 1)) ? true : false;
+	res->sign = POZ_Z_D(n) == POZ_Z_D(m) ? true : false;
 	delNN(nNN);
 	delNN(mNN);
 	delNN(resNN);
