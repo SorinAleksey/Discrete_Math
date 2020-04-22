@@ -4,7 +4,12 @@
 struct NN;
 struct Z;
 struct Q;
+struct P;
 
+//Сорин Алексей
+P* readP();
+void printP(P* n);
+P* delP(P* n);
 
 
 #endif
